@@ -1,17 +1,22 @@
 /* TODO - add your code to create a functional React component that renders account details for a logged in user. Fetch the account data from the provided API. You may consider conditionally rendering a message for other users that prompts them to log in or create an account.  */
 import {Link} from "react-router-dom"
 import {useState, useEffect} from "react"
-import { fetchCheckedOutBooks, returnBook } from "../API/api"
+import { fetchCheckedOutBooks, returnBook, fetchUserDetails } from "../API/api"
 
 
 export default function Account({token}){
 //console.log(token)
 
 const [books, setBooks] = useState([])
+const [user, setUser] = useState([])
 
 useEffect(() => {
     async function getBooks() {
       if (token) {
+const userDetails = await fetchUserDetails(token)
+setUser(userDetails)
+
+
         const checkedOutBooks = await fetchCheckedOutBooks(token); // Call the API function
         setBooks(checkedOutBooks.reservation);
         //console.log(checkedOutBooks)
@@ -47,6 +52,7 @@ if(token===null){
 
     return( <div>
         <h1>Welcome to your account</h1>
+        <p>{user.email}</p>
     
         <div>
           <h1>Checked-Out Books</h1>

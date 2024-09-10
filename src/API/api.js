@@ -63,3 +63,21 @@ export async function fetchCheckedOutBooks(token) {
 
     }
 }
+
+export async function fetchUserDetails(token) {
+  try {
+    const response = await fetch('https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/me', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const user = await response.json();
+    //console.log(user)
+    return user;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    return null;
+  }
+}
